@@ -25,6 +25,7 @@ ENV RSYSLOG_DESTINATION=127.0.0.1 \
     HEALTH_CHECK="check inter 2000 rise 2 fall 3" \
     NBPROC=1
 
+RUN chmod -R /haproxy-src/haproxy/bin
 ENV LIVE_CERT_FOLDER="/etc/letsencrypt/live"
 EXPOSE 80 443 1936
 ENTRYPOINT ["/sbin/tini", "--"]
