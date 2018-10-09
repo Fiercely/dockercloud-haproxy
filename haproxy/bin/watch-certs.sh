@@ -36,6 +36,6 @@ do
 	NOW="$(date +%s)"
 	if (( NOW > IGNORE_UNTIL )); then
 		(( IGNORE_UNTIL = NOW + IGNORE_SECS ))
-		(sleep $IGNORE_SECS; install-certs.sh; /reload.sh) &
+		(sleep $IGNORE_SECS; /haproxy-src/haproxy/bin/install-certs.sh; /reload.sh) &
 	fi
 done
