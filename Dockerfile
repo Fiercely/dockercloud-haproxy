@@ -28,4 +28,4 @@ ENV RSYSLOG_DESTINATION=127.0.0.1 \
 ENV LIVE_CERT_FOLDER="/etc/letsencrypt/live"
 EXPOSE 80 443 1936
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["/haproxy-src/bin/entrypoint.sh", "dockercloud-haproxy"]
+CMD ["/haproxy-src/haproxy/bin/entrypoint.sh", "dockercloud-haproxy"]
