@@ -4,7 +4,7 @@ LABEL maintainer="andre.ilhicas@fiercely.pt"
 COPY . /haproxy-src
 
 RUN apk update && \
-    apk --update --no-cache add tini haproxy py-pip build-base python-dev ca-certificates bash inotify-tools openssl && \
+    apk --no-cache add tini haproxy py-pip build-base python-dev ca-certificates bash inotify-tools openssl && \
     cp /haproxy-src/reload.sh /reload.sh && \
     cd /haproxy-src && \
     pip install -r requirements.txt && \
@@ -25,7 +25,7 @@ ENV RSYSLOG_DESTINATION=127.0.0.1 \
     HEALTH_CHECK="check inter 2000 rise 2 fall 3" \
     NBPROC=1
 
-RUN chmod -R /haproxy-src/haproxy/bin
+RUN chmod +x -R /haproxy-src/haproxy/bin
 ENV LIVE_CERT_FOLDER="/etc/letsencrypt/live"
 EXPOSE 80 443 1936
 ENTRYPOINT ["/sbin/tini", "--"]
