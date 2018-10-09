@@ -1,16 +1,16 @@
-FROM alpine:3.6
-MAINTAINER Feng Honglin <hfeng@tutum.co>
+FROM alpine:3.8
+LABEL maintainer="andre.ilhicas@fiercely.pt"
 
 COPY . /haproxy-src
 
 RUN apk update && \
-    apk --no-cache add tini haproxy py-pip build-base python-dev ca-certificates && \
+    apk --update --no-cache add tini haproxy py-pip build-base python-dev ca-certificates bash inotify-tools openssl && \
     cp /haproxy-src/reload.sh /reload.sh && \
     cd /haproxy-src && \
     pip install -r requirements.txt && \
     pip install . && \
     apk del build-base python-dev && \
-    rm -rf "/tmp/*" "/root/.cache" `find / -regex '.*\.py[co]'`
+    rm -rf "/tmp/*" "/root/.cache" "/var/cache/apk/*" `find / -regex '.*\.py[co]'`
 
 ENV RSYSLOG_DESTINATION=127.0.0.1 \
     MODE=http \
@@ -25,6 +25,7 @@ ENV RSYSLOG_DESTINATION=127.0.0.1 \
     HEALTH_CHECK="check inter 2000 rise 2 fall 3" \
     NBPROC=1
 
+ENV LIVE_CERT_FOLDER="/etc/letsencrypt/live"
 EXPOSE 80 443 1936
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["dockercloud-haproxy"]
+CMD ["/haproxy-src/bin/entrypoint.sh", "dockercloud-haproxy"]
